@@ -1,6 +1,5 @@
 {
   "rewrites": [
-    { "source": "/api/:path*", "destination": "/api/:path*" },
     { "source": "/pensiunea", "destination": "/pensiunea/index.html" },
     { "source": "/therapy", "destination": "/therapy/index.html" },
     { "source": "/recenzii", "destination": "/recenzii/index.html" },

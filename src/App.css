@@ -1649,6 +1649,21 @@
   padding: 16px 24px 22px;
 }
 
+@media (min-width: 1101px) {
+  .certificate-section {
+    width: min(1180px, calc(100vw - 32px));
+    max-width: none;
+    margin-inline: 50%;
+    transform: translateX(-50%);
+  }
+
+  .certificate-grid {
+    grid-template-columns: repeat(4, minmax(150px, 180px));
+    column-gap: 60px;
+    padding-inline: 72px;
+  }
+}
+
 .certificate-card {
   position: relative;
   z-index: 1;
