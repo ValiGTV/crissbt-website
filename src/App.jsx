@@ -715,7 +715,7 @@ function DiplomaVisual({ document, alt, loadingLabel, enlarged = false }) {
   const preventImageAction = (event) => event.preventDefault()
 
   return (
-    <div className="certificate-visual" style={{ aspectRatio: enlarged ? 'auto' : `${document.width} / ${document.height}` }}>
+    <div className="certificate-visual" style={{ aspectRatio: enlarged ? 'auto' : undefined }}>
       {!loaded && <span className="certificate-image-loading">{loadingLabel}</span>}
       <img
         src={enlarged ? document.image : document.thumbnail}

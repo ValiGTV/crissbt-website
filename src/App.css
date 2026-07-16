@@ -1649,18 +1649,40 @@
   padding: 16px 24px 22px;
 }
 
-@media (min-width: 1101px) {
+@media (min-width: 1101px) and (max-width: 1249px) {
+  .certificate-grid {
+    grid-template-columns: repeat(2, minmax(320px, 1fr));
+    column-gap: 36px;
+    padding-inline: 60px;
+  }
+
+  .certificate-card {
+    width: 180px;
+    justify-self: center;
+  }
+}
+
+@media (min-width: 1250px) {
   .certificate-section {
-    width: min(1180px, calc(100vw - 32px));
+    width: min(1280px, calc(100vw - 32px));
     max-width: none;
     margin-inline: 50%;
     transform: translateX(-50%);
   }
 
   .certificate-grid {
-    grid-template-columns: repeat(4, minmax(150px, 180px));
-    column-gap: 60px;
-    padding-inline: 72px;
+    grid-template-columns: repeat(3, minmax(320px, 1fr));
+    column-gap: 36px;
+    padding-inline: 60px;
+  }
+
+  .certificate-card {
+    width: 180px;
+    justify-self: center;
+  }
+
+  .certificate-card:last-child:nth-child(3n + 1) {
+    grid-column: 2;
   }
 }
 
@@ -1668,8 +1690,10 @@
   position: relative;
   z-index: 1;
   display: grid;
-  width: 100%;
+  width: 180px;
+  max-width: 100%;
   min-width: 0;
+  justify-self: center;
   overflow: visible;
   border: 1px solid rgba(216, 184, 102, 0.34);
   border-radius: 10px;
@@ -1691,7 +1715,7 @@
   box-shadow: 0 16px 34px rgba(0, 0, 0, 0.2);
 }
 
-@media (hover: hover) and (pointer: fine) and (min-width: 900px) {
+@media (hover: hover) and (pointer: fine) and (min-width: 1101px) {
   .certificate-card:hover {
     z-index: 20;
     border-color: rgba(216, 184, 102, 0.72);
@@ -1703,6 +1727,8 @@
 
 .certificate-visual {
   position: relative;
+  display: grid;
+  place-items: center;
   overflow: hidden;
   aspect-ratio: 3 / 4;
   border: 1px solid rgba(79, 58, 37, 0.28);
@@ -1716,6 +1742,7 @@
   width: 100%;
   height: 100%;
   object-fit: contain;
+  object-position: center center;
   pointer-events: auto;
   user-select: none;
   -webkit-user-drag: none;
