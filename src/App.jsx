@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import {
   BrowserRouter,
   Link,
+  Navigate,
   NavLink,
   Route,
   Routes,
@@ -493,6 +494,12 @@ function ScrollToTop() {
   }, [pathname])
 
   return null
+}
+
+function AdminRedirect() {
+  const { search, hash } = useLocation()
+
+  return <Navigate replace to={`/admin/reviews${search}${hash}`} />
 }
 
 function SectionHeader({ eyebrow, title, text }) {
@@ -1390,6 +1397,7 @@ function AppRoutes({ currentLanguage, onLanguageChange, t }) {
           element={<TherapyPage t={t} language={currentLanguage} />}
         />
         <Route path="/recenzii" element={<ReviewsPage t={t} language={currentLanguage} />} />
+        <Route path="/admin" element={<AdminRedirect />} />
         <Route path="/admin/reviews" element={<AdminReviewsPage t={t} language={currentLanguage} />} />
         <Route path="/admin/prices" element={<AdminPricesPage language={currentLanguage} />} />
         <Route path="/contact" element={<ContactPage t={t} />} />
