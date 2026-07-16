@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 850" role="img" aria-labelledby="title">
+  <title id="title">Certificate placeholder</title>
+  <rect width="1200" height="850" fill="#eee7d8"/>
+  <rect x="42" y="42" width="1116" height="766" rx="8" fill="none" stroke="#9c7947" stroke-width="4"/>
+  <rect x="62" y="62" width="1076" height="726" rx="5" fill="none" stroke="#bca77e" stroke-width="2"/>
+  <path d="M480 330h240M525 410h150M420 520h360" stroke="#b7a98f" stroke-width="10" stroke-linecap="round"/>
+  <circle cx="600" cy="235" r="56" fill="none" stroke="#9c7947" stroke-width="5"/>
+  <path d="M575 235l18 18 34-39" fill="none" stroke="#9c7947" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="600" y="655" text-anchor="middle" fill="#715c3e" font-family="Georgia, serif" font-size="32">CERTIFICATE PLACEHOLDER</text>
+</svg>

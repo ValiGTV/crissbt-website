@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 850" role="img" aria-labelledby="title">
+  <title id="title">Diploma placeholder</title>
+  <rect width="1200" height="850" fill="#eee7d8"/>
+  <rect x="42" y="42" width="1116" height="766" rx="8" fill="none" stroke="#71806c" stroke-width="4"/>
+  <rect x="62" y="62" width="1076" height="726" rx="5" fill="none" stroke="#a6b09e" stroke-width="2"/>
+  <path d="M480 330h240M525 410h150M420 520h360" stroke="#b7a98f" stroke-width="10" stroke-linecap="round"/>
+  <path d="M600 285c-55-44-42-105 18-116 18 50 6 90-18 116Zm0 0c46-36 91-20 103 25-42 15-76 3-103-25Z" fill="none" stroke="#71806c" stroke-width="5" stroke-linejoin="round"/>
+  <text x="600" y="655" text-anchor="middle" fill="#52604f" font-family="Georgia, serif" font-size="32">DIPLOMA PLACEHOLDER</text>
+</svg>
