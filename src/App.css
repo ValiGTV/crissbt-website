@@ -1263,8 +1263,10 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(150px, 180px));
   justify-content: center;
-  gap: 24px 20px;
+  align-items: start;
+  gap: 32px 24px;
   overflow: visible;
+  padding: 16px 24px 22px;
 }
 
 .certificate-card {
@@ -1994,7 +1996,8 @@
 
   .certificate-grid {
     grid-template-columns: repeat(2, minmax(0, 180px));
-    gap: 18px 12px;
+    gap: 32px 24px;
+    padding: 14px 0 20px;
   }
 
   .pricing-group,
