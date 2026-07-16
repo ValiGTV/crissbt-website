@@ -131,6 +131,14 @@ const translations = {
         bowenTitle: 'Diplome și atestate – Terapia Bowen',
         massageTitle: 'Diplome și atestate – Masaj',
         genericTitle: 'Diplomă și atestat profesional',
+        captions: {
+          babies: 'Certificat Bowen pentru bebeluși',
+          diabetes: 'Specializare Bowen pentru diabet',
+          sports: 'Specializare Bowen – accidentări sportive',
+          technique: 'Certificat Tehnica Bowen',
+          masseur: 'Atestat profesional – Maseur',
+          rejuvance: 'Certificat Rejuvance',
+        },
         empty: 'Diplomele și atestatele vor fi publicate în curând.',
         loading: 'Se încarcă documentul…',
         preview: 'Previzualizare diplomă',
@@ -331,6 +339,14 @@ const translations = {
         bowenTitle: 'Bowen Therapy Diplomas and Certificates',
         massageTitle: 'Massage Diplomas and Certificates',
         genericTitle: 'Professional diploma and certificate',
+        captions: {
+          babies: 'Bowen for Babies Certificate',
+          diabetes: 'Bowen for Diabetes Specialization',
+          sports: 'Bowen Sports Injuries Specialization',
+          technique: 'Bowen Technique Certificate',
+          masseur: 'Professional Qualification – Masseur',
+          rejuvance: 'Rejuvance Certificate',
+        },
         empty: 'Diplomas and certificates will be published soon.',
         loading: 'Loading document…',
         preview: 'Diploma preview',
@@ -685,27 +701,31 @@ function PensionPage({ t }) {
 
 const diplomaCollections = {
   bowen: [
-    '/Diplome si Atestate/Bowen/Bowen for Babies.jpeg',
-    '/Diplome si Atestate/Bowen/Bowen for Diabetes.jpeg',
-    '/Diplome si Atestate/Bowen/Bowen for Sportive Injuries.jpeg',
-    '/Diplome si Atestate/Bowen/Bowen Technique.jpeg',
+    { image: '/Diplome si Atestate/Bowen/Bowen for Babies.jpeg', thumbnail: '/Diplome si Atestate/Thumbnails/Bowen/Bowen for Babies.jpeg', caption: 'babies', width: 1363, height: 1937 },
+    { image: '/Diplome si Atestate/Bowen/Bowen for Diabetes.jpeg', thumbnail: '/Diplome si Atestate/Thumbnails/Bowen/Bowen for Diabetes.jpeg', caption: 'diabetes', width: 1372, height: 1921 },
+    { image: '/Diplome si Atestate/Bowen/Bowen for Sportive Injuries.jpeg', thumbnail: '/Diplome si Atestate/Thumbnails/Bowen/Bowen for Sportive Injuries.jpeg', caption: 'sports', width: 1353, height: 1915 },
+    { image: '/Diplome si Atestate/Bowen/Bowen Technique.jpeg', thumbnail: '/Diplome si Atestate/Thumbnails/Bowen/Bowen Technique.jpeg', caption: 'technique', width: 1473, height: 1958 },
   ],
   massage: [
-    '/Diplome si Atestate/Masaj/Maseur.jpeg',
-    '/Diplome si Atestate/Masaj/Rejuvance.jpeg',
+    { image: '/Diplome si Atestate/Masaj/Maseur.jpeg', thumbnail: '/Diplome si Atestate/Thumbnails/Masaj/Maseur.jpeg', caption: 'masseur', width: 2036, height: 2048 },
+    { image: '/Diplome si Atestate/Masaj/Rejuvance.jpeg', thumbnail: '/Diplome si Atestate/Thumbnails/Masaj/Rejuvance.jpeg', caption: 'rejuvance', width: 1249, height: 1826 },
   ],
 }
 
-function DiplomaVisual({ document, alt, loadingLabel }) {
+function DiplomaVisual({ document, alt, loadingLabel, enlarged = false }) {
   const [loaded, setLoaded] = useState(false)
   const preventImageAction = (event) => event.preventDefault()
 
   return (
-    <div className="certificate-visual">
+    <div className="certificate-visual" style={{ aspectRatio: enlarged ? 'auto' : `${document.width} / ${document.height}` }}>
       {!loaded && <span className="certificate-image-loading">{loadingLabel}</span>}
       <img
-        src={document.image}
+        src={enlarged ? document.image : document.thumbnail}
         alt={alt}
+        width={document.width}
+        height={document.height}
+        loading={enlarged ? 'eager' : 'lazy'}
+        decoding="async"
         draggable="false"
         onLoad={() => setLoaded(true)}
         onContextMenu={preventImageAction}
@@ -733,7 +753,7 @@ function DiplomaGallery({ documents, title, t, onPreview }) {
       ) : (
         <div className="certificate-grid">
           {documents.map((document, index) => (
-            <button className="certificate-card" type="button" key={document.image} onClick={() => onPreview(index)}>
+            <button className="certificate-card" type="button" key={document.image} onClick={(event) => onPreview(index, event.currentTarget)} aria-label={`${t.preview}: ${document.title}`}>
               <DiplomaVisual document={document} alt={document.title} loadingLabel={t.loading} />
               <span className="certificate-details">
                 <strong>{document.title}</strong>
@@ -751,11 +771,13 @@ function DiplomaGallery({ documents, title, t, onPreview }) {
 
 function TherapyPage({ t }) {
   const [preview, setPreview] = useState(null)
+  const lightboxRef = useRef(null)
   const lightboxCloseRef = useRef(null)
+  const previewTriggerRef = useRef(null)
   const certificateT = t.therapy.certificates
   const collections = useMemo(() => ({
-    bowen: diplomaCollections.bowen.map((image, index) => ({ image, title: `${certificateT.genericTitle} ${index + 1}` })),
-    massage: diplomaCollections.massage.map((image, index) => ({ image, title: `${certificateT.genericTitle} ${index + 1}` })),
+    bowen: diplomaCollections.bowen.map((document) => ({ ...document, title: certificateT.captions[document.caption] })),
+    massage: diplomaCollections.massage.map((document) => ({ ...document, title: certificateT.captions[document.caption] })),
   }), [certificateT])
   const activeDocuments = preview ? collections[preview.collection] : []
   const activeDocument = preview ? activeDocuments[preview.index] : null
@@ -768,17 +790,35 @@ function TherapyPage({ t }) {
     })
   }, [collections])
 
+  const openPreview = useCallback((collection, index, trigger) => {
+    previewTriggerRef.current = trigger
+    setPreview({ collection, index })
+  }, [])
+
+  const closePreview = useCallback(() => {
+    setPreview(null)
+    window.setTimeout(() => previewTriggerRef.current?.focus(), 0)
+  }, [])
+
   useEffect(() => {
     if (!preview) return undefined
     lightboxCloseRef.current?.focus()
     const handleKeyDown = (event) => {
-      if (event.key === 'Escape') setPreview(null)
+      if (event.key === 'Escape') closePreview()
       if (event.key === 'ArrowLeft') movePreview(-1)
       if (event.key === 'ArrowRight') movePreview(1)
+      if (event.key === 'Tab') {
+        const focusable = [...lightboxRef.current.querySelectorAll('button:not([disabled])')]
+        if (!focusable.length) return
+        const first = focusable[0]
+        const last = focusable[focusable.length - 1]
+        if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus() }
+        else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus() }
+      }
     }
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [preview, movePreview])
+  }, [preview, movePreview, closePreview])
 
   return (
     <main className="page page-therapy">
@@ -840,12 +880,6 @@ function TherapyPage({ t }) {
             </div>
           </section>
 
-          <div className="certificate-showcase">
-            <p className="certificate-intro">{certificateT.intro}</p>
-            <DiplomaGallery documents={collections.bowen} title={certificateT.bowenTitle} t={certificateT} onPreview={(index) => setPreview({ collection: 'bowen', index })} />
-            <DiplomaGallery documents={collections.massage} title={certificateT.massageTitle} t={certificateT} onPreview={(index) => setPreview({ collection: 'massage', index })} />
-          </div>
-
           <section className="appointment-cta">
             <div>
               <h2>{t.therapy.cta.title}</h2>
@@ -860,14 +894,20 @@ function TherapyPage({ t }) {
               </Link>
             </div>
           </section>
+
+          <div className="certificate-showcase">
+            <p className="certificate-intro">{certificateT.intro}</p>
+            <DiplomaGallery documents={collections.bowen} title={certificateT.bowenTitle} t={certificateT} onPreview={(index, trigger) => openPreview('bowen', index, trigger)} />
+            <DiplomaGallery documents={collections.massage} title={certificateT.massageTitle} t={certificateT} onPreview={(index, trigger) => openPreview('massage', index, trigger)} />
+          </div>
         </div>
       </section>
       {activeDocument && (
-        <div className="certificate-lightbox" role="dialog" aria-modal="true" aria-label={`${certificateT.preview}: ${activeDocument.title}`} onMouseDown={(event) => { if (event.target === event.currentTarget) setPreview(null) }}>
-          <button ref={lightboxCloseRef} className="lightbox-close" type="button" aria-label={certificateT.close} onClick={() => setPreview(null)}>×</button>
+        <div ref={lightboxRef} className="certificate-lightbox" role="dialog" aria-modal="true" aria-label={`${certificateT.preview}: ${activeDocument.title}`} onMouseDown={(event) => { if (event.target === event.currentTarget) closePreview() }}>
+          <button ref={lightboxCloseRef} className="lightbox-close" type="button" aria-label={certificateT.close} onClick={closePreview}>×</button>
           {activeDocuments.length > 1 && <button className="lightbox-nav lightbox-previous" type="button" aria-label={certificateT.previous} onClick={() => movePreview(-1)}>‹</button>}
           <div className="lightbox-document">
-            <DiplomaVisual key={activeDocument.image} document={activeDocument} alt={activeDocument.title} loadingLabel={certificateT.loading} />
+            <DiplomaVisual key={activeDocument.image} document={activeDocument} alt={activeDocument.title} loadingLabel={certificateT.loading} enlarged />
             <strong>{activeDocument.title}</strong>
           </div>
           {activeDocuments.length > 1 && <button className="lightbox-nav lightbox-next" type="button" aria-label={certificateT.next} onClick={() => movePreview(1)}>›</button>}
