@@ -11,6 +11,9 @@ import './App.css'
 import { reviewDisplaySource } from './reviewsLogic.js'
 import { adminLabels, canStartModerationAction, deletionMethod, localizedModerationTimestamp } from './adminReviewsLogic.js'
 import SeoMetadata from './SeoMetadata.jsx'
+import { CONTACT_EMAIL, contactMailto } from './contactConfig.js'
+import AdminPricesPage from './AdminPricesPage.jsx'
+import ReviewCarousel from './ReviewCarousel.jsx'
 
 const DEFAULT_AUDIO_VOLUME = 0.22
 const LANGUAGE_STORAGE_KEY = 'pensiunea-cris-language'
@@ -98,10 +101,6 @@ const translations = {
       bowen: {
         title: 'Terapia Bowen',
         subtitle: 'Ședințe blânde și personalizate pentru adulți și copii.',
-        options: [
-          { name: 'Adult', session: '1 ședință', price: '150 RON' },
-          { name: 'Copil', session: '1 ședință', price: '80 RON' },
-        ],
         note: 'Durata și planul ședințelor se stabilesc în funcție de nevoile fiecărei persoane.',
       },
       massage: {
@@ -113,14 +112,9 @@ const translations = {
           package: 'Abonament',
           packagePrice: 'Preț abonament',
         },
-        services: [
-          { name: 'Masaj facial', duration: '50 minute', sessionPrice: '200 RON', package: '6 ședințe', packagePrice: '1000 RON' },
-          { name: 'Masaj de relaxare', duration: '50 minute', sessionPrice: '150 RON', package: '10 ședințe', packagePrice: '1200 RON' },
-          { name: 'Masaj terapeutic', duration: '50 minute', sessionPrice: '150 RON', package: '10 ședințe', packagePrice: '1200 RON' },
-          { name: 'Reflexoterapie – Varianta 1', duration: '30 minute', sessionPrice: '60 RON', package: '10 ședințe', packagePrice: '480 RON' },
-          { name: 'Reflexoterapie – Varianta 2', duration: '50 minute', sessionPrice: '100 RON', package: '10 ședințe', packagePrice: '800 RON' },
-        ],
       },
+      pricesLoading: 'Se încarcă tarifele…',
+      pricesUnavailable: 'Tarifele sunt momentan în curs de actualizare. Pentru informații, vă rugăm să ne contactați.',
       cta: {
         title: 'Programează o ședință',
         text: 'Pentru informații și programări, ne poți contacta telefonic sau prin formularul de contact.',
@@ -168,6 +162,11 @@ const translations = {
       empty: 'Nu există încă recenzii aprobate pentru acest serviciu.',
       visitDate: 'Vizită',
       starsLabel: 'stele',
+      carouselLabel: 'Carusel cu recenzii aprobate',
+      previousReview: 'Recenzia anterioară',
+      nextReview: 'Recenzia următoare',
+      readMore: 'Citește mai mult',
+      closeReview: 'Închide recenzia',
     },
     contact: {
       eyebrow: 'Rezervari si programari',
@@ -306,10 +305,6 @@ const translations = {
       bowen: {
         title: 'Bowen Therapy',
         subtitle: 'Gentle and personalized sessions for adults and children.',
-        options: [
-          { name: 'Adult', session: '1 session', price: '150 RON' },
-          { name: 'Child', session: '1 session', price: '80 RON' },
-        ],
         note: 'Session duration and treatment plan are established according to each person’s needs.',
       },
       massage: {
@@ -321,14 +316,9 @@ const translations = {
           package: 'Package',
           packagePrice: 'Package price',
         },
-        services: [
-          { name: 'Facial Massage', duration: '50 minutes', sessionPrice: '200 RON', package: '6 sessions', packagePrice: '1000 RON' },
-          { name: 'Relaxation Massage', duration: '50 minutes', sessionPrice: '150 RON', package: '10 sessions', packagePrice: '1200 RON' },
-          { name: 'Therapeutic Massage', duration: '50 minutes', sessionPrice: '150 RON', package: '10 sessions', packagePrice: '1200 RON' },
-          { name: 'Reflexology – Option 1', duration: '30 minutes', sessionPrice: '60 RON', package: '10 sessions', packagePrice: '480 RON' },
-          { name: 'Reflexology – Option 2', duration: '50 minutes', sessionPrice: '100 RON', package: '10 sessions', packagePrice: '800 RON' },
-        ],
       },
+      pricesLoading: 'Loading prices…',
+      pricesUnavailable: 'Prices are currently being updated. Please contact us for details.',
       cta: {
         title: 'Book a session',
         text: 'For information and appointments, contact us by phone or through the contact form.',
@@ -376,6 +366,11 @@ const translations = {
       empty: 'There are no approved reviews for this service yet.',
       visitDate: 'Visit',
       starsLabel: 'stars',
+      carouselLabel: 'Approved reviews carousel',
+      previousReview: 'Previous review',
+      nextReview: 'Next review',
+      readMore: 'Read more',
+      closeReview: 'Close review',
     },
     contact: {
       eyebrow: 'Reservations and appointments',
@@ -772,8 +767,10 @@ function DiplomaGallery({ documents, title, t, onPreview }) {
   )
 }
 
-function TherapyPage({ t }) {
+function TherapyPage({ t, language }) {
   const [preview, setPreview] = useState(null)
+  const [servicePrices, setServicePrices] = useState(null)
+  const [priceError, setPriceError] = useState(false)
   const lightboxRef = useRef(null)
   const lightboxCloseRef = useRef(null)
   const previewTriggerRef = useRef(null)
@@ -784,6 +781,23 @@ function TherapyPage({ t }) {
   }), [certificateT])
   const activeDocuments = preview ? collections[preview.collection] : []
   const activeDocument = preview ? activeDocuments[preview.index] : null
+  const bowenPrices = servicePrices?.filter((price) => price.service_group === 'bowen') || []
+  const massagePrices = servicePrices?.filter((price) => price.service_group === 'massage') || []
+
+  useEffect(() => {
+    const controller = new AbortController()
+    fetch('/api/prices', { signal: controller.signal })
+      .then((response) => {
+        if (!response.ok) throw new Error('prices')
+        return response.json()
+      })
+      .then((data) => {
+        if (!Array.isArray(data.prices) || data.prices.length === 0) throw new Error('empty prices')
+        setServicePrices(data.prices)
+      })
+      .catch((error) => { if (error.name !== 'AbortError') setPriceError(true) })
+    return () => controller.abort()
+  }, [])
 
   const movePreview = useCallback((direction) => {
     setPreview((current) => {
@@ -839,15 +853,9 @@ function TherapyPage({ t }) {
               <h2>{t.therapy.bowen.title}</h2>
               <p>{t.therapy.bowen.subtitle}</p>
             </header>
-            <div className="bowen-price-grid">
-              {t.therapy.bowen.options.map((option) => (
-                <article className="pricing-card bowen-price-card" key={option.name}>
-                  <h3>{option.name}</h3>
-                  <span className="session-count">{option.session}</span>
-                  <strong className="primary-price">{option.price}</strong>
-                </article>
-              ))}
-            </div>
+            {priceError ? <p className="pricing-api-state error" role="status">{t.therapy.pricesUnavailable}</p> : servicePrices === null ? <PriceSkeleton label={t.therapy.pricesLoading} count={2} /> : <div className="bowen-price-grid">
+              {bowenPrices.map((option) => <article className="pricing-card bowen-price-card" key={option.id}><h3>{language === 'ro' ? option.title_ro : option.title_en}</h3><span className="session-count">{language === 'ro' ? '1 ședință' : '1 session'}</span><strong className="primary-price">{option.session_price_ron} RON</strong></article>)}
+            </div>}
             <p className="pricing-note">{t.therapy.bowen.note}</p>
           </section>
 
@@ -856,31 +864,31 @@ function TherapyPage({ t }) {
               <h2>{t.therapy.massage.title}</h2>
               <p>{t.therapy.massage.subtitle}</p>
             </header>
-            <div className="massage-price-grid">
-              {t.therapy.massage.services.map((service) => (
-                <article className="pricing-card massage-price-card" key={service.name}>
-                  <h3>{service.name}</h3>
+            {priceError ? <p className="pricing-api-state error" role="status">{t.therapy.pricesUnavailable}</p> : servicePrices === null ? <PriceSkeleton label={t.therapy.pricesLoading} count={5} /> : <div className="massage-price-grid">
+              {massagePrices.map((service) => (
+                <article className="pricing-card massage-price-card" key={service.id}>
+                  <h3>{language === 'ro' ? service.title_ro : service.title_en}</h3>
                   <dl>
-                    <div>
+                    {service.duration_minutes && <div>
                       <dt><span aria-hidden="true">◷</span>{t.therapy.massage.labels.duration}</dt>
-                      <dd>{service.duration}</dd>
-                    </div>
+                      <dd>{service.duration_minutes} {language === 'ro' ? 'minute' : 'minutes'}</dd>
+                    </div>}
                     <div className="single-price-row">
                       <dt><span aria-hidden="true">◆</span>{t.therapy.massage.labels.sessionPrice}</dt>
-                      <dd>{service.sessionPrice}</dd>
+                      <dd>{service.session_price_ron} RON</dd>
                     </div>
-                    <div>
+                    {service.package_sessions && <div>
                       <dt><span aria-hidden="true">◇</span>{t.therapy.massage.labels.package}</dt>
-                      <dd>{service.package}</dd>
-                    </div>
-                    <div className="package-price-row">
+                      <dd>{service.package_sessions} {language === 'ro' ? 'ședințe' : 'sessions'}</dd>
+                    </div>}
+                    {service.package_price_ron && <div className="package-price-row">
                       <dt>{t.therapy.massage.labels.packagePrice}</dt>
-                      <dd>{service.packagePrice}</dd>
-                    </div>
+                      <dd>{service.package_price_ron} RON</dd>
+                    </div>}
                   </dl>
                 </article>
               ))}
-            </div>
+            </div>}
           </section>
 
           <section className="appointment-cta">
@@ -920,16 +928,15 @@ function TherapyPage({ t }) {
   )
 }
 
+function PriceSkeleton({ label, count }) {
+  return <div className="pricing-skeleton" role="status" aria-label={label}>{Array.from({ length: count }, (_, index) => <span className="pricing-skeleton-card" aria-hidden="true" key={index}></span>)}</div>
+}
+
 const sampleReviews = [
   { id: 'sample-1', reviewer_name: 'Andreea M.', service_type: 'bowen', rating: 5, review_text: 'Ședința de Terapia Bowen s-a desfășurat într-o atmosferă calmă, iar explicațiile au fost clare și profesioniste.', visit_date: null, language: 'ro', isSample: true },
   { id: 'sample-2', reviewer_name: 'Elena R.', service_type: 'relaxation_massage', rating: 5, review_text: 'Masajul de relaxare a fost plăcut și atent realizat. Atmosfera m-a ajutat să mă deconectez complet.', visit_date: null, language: 'ro', isSample: true },
   { id: 'sample-3', reviewer_name: 'Mihai P.', service_type: 'reflexology', rating: 5, review_text: 'Am apreciat atenția acordată și modul profesionist în care a fost realizată ședința de reflexoterapie.', visit_date: null, language: 'ro', isSample: true },
 ]
-
-function publicReviewerName(name) {
-  const parts = name.trim().split(/\s+/)
-  return parts.length > 1 ? `${parts[0]} ${parts[1][0]}.` : parts[0]
-}
 
 function ReviewsPage({ t, language }) {
   const [reviews, setReviews] = useState([])
@@ -1007,27 +1014,11 @@ function ReviewsPage({ t, language }) {
             ))}
           </div>
 
-          <div className="reviews-scroll" tabIndex="0">
+          <div className="reviews-public-content">
             {loading && <p className="reviews-state">{t.reviews.loading}</p>}
             {!loading && loadError && <p className="reviews-state error">{t.reviews.loadError}</p>}
             {!loading && visibleReviews.length === 0 && <p className="reviews-state">{t.reviews.empty}</p>}
-            {!loading && visibleReviews.length > 0 && (
-              <div className="reviews-grid">
-                {visibleReviews.map((review) => (
-                  <article className="glass-card review-card" key={review.id}>
-                    <div className="stars" aria-label={`${review.rating} ${t.reviews.starsLabel}`}>
-                      {'★'.repeat(review.rating)}<span>{'★'.repeat(5 - review.rating)}</span>
-                    </div>
-                    <strong className="review-service">{t.reviews.services[review.service_type]}</strong>
-                    <p>“{review.review_text}”</p>
-                    <footer>
-                      <strong>{publicReviewerName(review.reviewer_name)}</strong>
-                      {review.visit_date && <time dateTime={review.visit_date}>{t.reviews.visitDate}: {new Intl.DateTimeFormat(language === 'ro' ? 'ro-RO' : 'en-GB').format(new Date(`${review.visit_date}T00:00:00`))}</time>}
-                    </footer>
-                  </article>
-                ))}
-              </div>
-            )}
+            {!loading && visibleReviews.length > 0 && <ReviewCarousel key={filter} reviews={visibleReviews} t={t.reviews} language={language} />}
           </div>
 
           <form className="review-form" onSubmit={handleSubmit}>
@@ -1144,6 +1135,7 @@ function AdminReviewsPage({ t, language }) {
   return (
     <main className="page page-reviews"><div className="page-overlay" aria-hidden="true"></div><section className="content-section page-content admin-page-content"><div className="section-shell admin-reviews-shell">
       <header className="admin-heading"><h1>{labels.title}</h1><div className="admin-account-area">{adminUser?.avatarUrl && <img className="admin-avatar" src={adminUser.avatarUrl} alt="" referrerPolicy="no-referrer" />}<div className="admin-identity"><strong>{adminUser?.name}</strong><span>{adminUser?.email}</span><small>{labels.signedIn}</small></div><button className="button secondary" type="button" disabled={logoutBusy} onClick={logout}>{logoutBusy ? labels.loading : labels.logout}</button></div></header>
+      <nav className="admin-section-nav" aria-label={labels.title}><Link className="active" to="/admin/reviews" aria-current="page">{language === 'ro' ? 'Recenzii' : 'Reviews'}</Link><Link to="/admin/prices">{language === 'ro' ? 'Prețuri și abonamente' : 'Prices and packages'}</Link></nav>
       <div className="admin-toolbar"><div className="review-filters">{[['pending', labels.pending], ['approved', labels.approved], ['rejected', labels.rejected]].map(([value, label]) => <button type="button" className={status === value ? 'active' : ''} onClick={() => setStatus(value)} key={value}>{label}</button>)}</div><select value={service} onChange={(event) => setService(event.target.value)}><option value="all">{labels.all}</option>{Object.entries(t.reviews.services).map(([value, label]) => <option value={value} key={value}>{label}</option>)}</select></div>
       {error && <p className="form-status error" role="alert">{error}</p>}
       <div className="admin-review-list">{visible.length === 0 && <p className="reviews-state">{labels.empty}</p>}{visible.map((review) => <AdminReviewCard key={review.id} review={review} labels={labels} language={language} serviceLabel={t.reviews.services[review.service_type]} activeAction={activeAction} onMutate={mutate} onRequestDelete={(trigger) => setDeleteTarget({ review, trigger })} />)}</div>
@@ -1189,6 +1181,26 @@ function ContactPage({ t }) {
   const directionsUrl =
     'https://www.google.com/maps/dir/?api=1&destination=Strada%20Ghioceilor%20nr.%206A%2C%20Slanic%2C%20Prahova%2C%20Romania'
 
+  const handleContactSubmit = (event) => {
+    event.preventDefault()
+    const form = event.currentTarget
+    const data = new FormData(form)
+    const interest = form.elements.interest
+    const service = interest.selectedOptions[0]?.textContent || data.get('interest')
+    window.location.href = contactMailto({
+      name: data.get('name'),
+      contact: data.get('contact'),
+      service,
+      message: data.get('message'),
+      labels: {
+        name: t.contact.form.name,
+        contact: t.contact.form.contact,
+        service: t.contact.form.interest,
+        message: t.contact.form.message,
+      },
+    })
+  }
+
   return (
     <main className="page page-contact">
       <div className="page-overlay" aria-hidden="true"></div>
@@ -1205,15 +1217,15 @@ function ContactPage({ t }) {
               <div className="contact-cards">
                 <article className="glass-card contact-card">
                   <span>{t.contact.cards.lodgingEmail}</span>
-                  <a href="mailto:pensiune@cris.com">pensiune@cris.com</a>
+                  <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
                 </article>
                 <article className="glass-card contact-card">
                   <span>{t.contact.cards.massageEmail}</span>
-                  <a href="mailto:masaj@cris.com">masaj@cris.com</a>
+                  <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
                 </article>
                 <article className="glass-card contact-card">
                   <span>{t.contact.cards.bowenEmail}</span>
-                  <a href="mailto:bowen@cris.com">bowen@cris.com</a>
+                  <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
                 </article>
                 <article className="glass-card contact-card">
                   <span>{t.contact.cards.phone}</span>
@@ -1275,7 +1287,7 @@ function ContactPage({ t }) {
               </article>
             </div>
 
-            <form className="contact-form">
+            <form className="contact-form" onSubmit={handleContactSubmit}>
               <label>
                 {t.contact.form.name}
                 <input type="text" name="name" placeholder={t.contact.form.namePlaceholder} />
@@ -1375,10 +1387,11 @@ function AppRoutes({ currentLanguage, onLanguageChange, t }) {
         <Route path="/pensiunea" element={<PensionPage t={t} />} />
         <Route
           path="/therapy"
-          element={<TherapyPage t={t} />}
+          element={<TherapyPage t={t} language={currentLanguage} />}
         />
         <Route path="/recenzii" element={<ReviewsPage t={t} language={currentLanguage} />} />
         <Route path="/admin/reviews" element={<AdminReviewsPage t={t} language={currentLanguage} />} />
+        <Route path="/admin/prices" element={<AdminPricesPage language={currentLanguage} />} />
         <Route path="/contact" element={<ContactPage t={t} />} />
       </Routes>
       <QuickContact t={t} />

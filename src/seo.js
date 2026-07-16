@@ -1,3 +1,5 @@
+import { CONTACT_EMAIL } from './contactConfig.js'
+
 export const SITE_URL = 'https://crissbt.com'
 export const SOCIAL_IMAGE = `${SITE_URL}/social-preview.jpg`
 
@@ -78,6 +80,7 @@ export function structuredData(pathname, language) {
     url: SITE_URL,
     image: SOCIAL_IMAGE,
     telephone: '+40743486611',
+    email: CONTACT_EMAIL,
     address: {
       '@type': 'PostalAddress',
       streetAddress: 'Strada Ghioceilor nr. 6A',

@@ -6,6 +6,7 @@
     { "source": "/recenzii", "destination": "/recenzii/index.html" },
     { "source": "/contact", "destination": "/contact/index.html" },
     { "source": "/admin/reviews", "destination": "/admin/reviews/index.html" },
+    { "source": "/admin/prices", "destination": "/admin/prices/index.html" },
     { "source": "/:path*", "destination": "/index.html" }
   ]
 }

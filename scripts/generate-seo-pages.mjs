@@ -58,3 +58,7 @@ const adminDirectory = join(dist, 'admin', 'reviews')
 await mkdir(adminDirectory, { recursive: true })
 const adminHead = '<title>Review moderation | Pensiunea Cris</title><meta name="robots" content="noindex, nofollow, noarchive" />'
 await writeFile(join(adminDirectory, 'index.html'), replaceSeoHead(template, adminHead), 'utf8')
+
+const pricesAdminDirectory = join(dist, 'admin', 'prices')
+await mkdir(pricesAdminDirectory, { recursive: true })
+await writeFile(join(pricesAdminDirectory, 'index.html'), replaceSeoHead(template, '<title>Price management | Pensiunea Cris</title><meta name="robots" content="noindex, nofollow, noarchive" />'), 'utf8')

@@ -102,7 +102,12 @@ export async function supabaseRequest({
     headers: requestHeaders,
     body: body === undefined ? undefined : JSON.stringify(body),
   })
-  if (!response.ok) throw new Error(`Supabase request failed (${response.status})`)
+  if (!response.ok) {
+    const error = new Error(`Supabase request failed (${response.status})`)
+    error.status = response.status
+    try { error.details = await response.json() } catch { error.details = null }
+    throw error
+  }
   if (response.status === 204) return null
   return response.json()
 }
