@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && node scripts/generate-seo-pages.mjs",
     "lint": "eslint .",
     "test": "node --test --test-concurrency=1 tests/*.test.js",
     "preview": "vite preview"

@@ -10,6 +10,7 @@ import {
 import './App.css'
 import { reviewDisplaySource } from './reviewsLogic.js'
 import { adminLabels, canStartModerationAction, deletionMethod, localizedModerationTimestamp } from './adminReviewsLogic.js'
+import SeoMetadata from './SeoMetadata.jsx'
 
 const DEFAULT_AUDIO_VOLUME = 0.22
 const LANGUAGE_STORAGE_KEY = 'pensiunea-cris-language'
@@ -435,6 +436,8 @@ const translations = {
 }
 
 function getStoredLanguage() {
+  const queryLanguage = new URLSearchParams(window.location.search).get('lang')
+  if (queryLanguage === 'en' || queryLanguage === 'ro') return queryLanguage
   const storedLanguage = window.localStorage.getItem(LANGUAGE_STORAGE_KEY)
 
   return storedLanguage === 'en' || storedLanguage === 'ro' ? storedLanguage : 'ro'
@@ -1360,6 +1363,7 @@ function QuickContact({ t }) {
 function AppRoutes({ currentLanguage, onLanguageChange, t }) {
   return (
     <>
+      <SeoMetadata language={currentLanguage} />
       <ScrollToTop />
       <Navbar
         currentLanguage={currentLanguage}
@@ -1390,6 +1394,9 @@ function App() {
   const handleLanguageChange = (language) => {
     setCurrentLanguage(language)
     window.localStorage.setItem(LANGUAGE_STORAGE_KEY, language)
+    const url = new URL(window.location.href)
+    url.searchParams.set('lang', language)
+    window.history.replaceState({}, '', `${url.pathname}${url.search}${url.hash}`)
   }
 
   useEffect(() => {
