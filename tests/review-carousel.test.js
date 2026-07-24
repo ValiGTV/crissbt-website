@@ -12,12 +12,21 @@ test('public approved reviews render through the custom carousel after filtering
   assert.doesNotMatch(app, /<div className="reviews-grid">/)
 })
 
-test('carousel autoplay is slow, continuous, looping, and reduced-motion aware', () => {
+test('carousel autoplay is clone-free, threshold-gated, looping, and reduced-motion aware', () => {
   assert.match(carousel, /requestAnimationFrame\(animate\)/)
   assert.match(carousel, /\(time - previous\) \* 0\.008/)
-  assert.match(carousel, /scrollLeft \+= setWidth/)
-  assert.match(carousel, /scrollLeft -= setWidth/)
+  assert.match(carousel, /if \(!interactive \|\| window\.matchMedia/)
+  assert.match(carousel, /element\.scrollLeft = 0/)
   assert.match(carousel, /prefers-reduced-motion: reduce/)
+  assert.match(carousel, /unique\.map\(\(review\)/)
+  assert.doesNotMatch(carousel, /flatMap|repeated|copy === 1|\[0, 1, 2\]/)
+})
+
+test('one to three reviews use a centered static layout without arrows', () => {
+  assert.match(carousel, /interactive \? 'interactive' : 'static'/)
+  assert.match(carousel, /interactive && <button className="review-carousel-arrow previous"/)
+  assert.match(carousel, /interactive && <button className="review-carousel-arrow next"/)
+  assert.match(css, /\.review-carousel\.static \.review-carousel-track[\s\S]*?flex-wrap: wrap;[\s\S]*?justify-content: center;/)
 })
 
 test('autoplay pauses independently for hover, focus, drag, touch, wheel, and modal', () => {

@@ -104,6 +104,32 @@ const translations = {
         subtitle: 'Ședințe blânde și personalizate pentru adulți și copii.',
         note: 'Durata și planul ședințelor se stabilesc în funcție de nevoile fiecărei persoane.',
       },
+      aboutBowen: {
+        eyebrow: 'TERAPIE MANUALĂ BLÂNDĂ',
+        title: 'Despre terapia Bowen',
+        intro: 'Terapia Bowen este o tehnică manuală blândă, realizată prin mișcări precise și delicate aplicate asupra țesuturilor moi, cu pauze între secvențe. Ședințele se desfășoară într-un ritm calm și sunt adaptate confortului fiecărei persoane.',
+        cards: [
+          {
+            icon: '≈',
+            title: 'Cum se desfășoară',
+            text: 'Terapeutul aplică mișcări ușoare în zone atent selectate, urmate de scurte pauze. Nu presupune manipulări bruște, iar presiunea este adaptată individual. Persoana rămâne îmbrăcată lejer pe durata ședinței.',
+          },
+          {
+            icon: '◇',
+            title: 'Pentru ce este aleasă',
+            text: 'Unele persoane aleg terapia Bowen ca abordare complementară pentru relaxare, tensiune musculară, rigiditate, disconfort musculoscheletal sau pentru susținerea stării generale de bine. Rezultatele pot varia de la o persoană la alta.',
+          },
+          {
+            icon: '✦',
+            title: 'O abordare complementară',
+            text: 'Cercetările disponibile sunt încă limitate, iar terapia Bowen nu trebuie prezentată ca tratament curativ. Pentru durere persistentă, simptome noi, traumatisme sau afecțiuni diagnosticate este recomandată evaluarea unui medic sau a unui profesionist medical calificat.',
+          },
+        ],
+        highlight: 'Potrivită pentru adulți și copii, în funcție de nevoile individuale și după evaluarea terapeutului.',
+        disclaimer: 'Informațiile prezentate au caracter general. Terapia Bowen nu înlocuiește consultația medicală, diagnosticul sau tratamentul recomandat de medic.',
+        ctaPrompt: 'Ai întrebări despre o ședință?',
+        ctaButton: 'Contactează-ne',
+      },
       massage: {
         title: 'Servicii de masaj',
         subtitle: 'Servicii profesionale de masaj și relaxare, oferite într-un cadru calm și confortabil.',
@@ -307,6 +333,32 @@ const translations = {
         title: 'Bowen Therapy',
         subtitle: 'Gentle and personalized sessions for adults and children.',
         note: 'Session duration and treatment plan are established according to each person’s needs.',
+      },
+      aboutBowen: {
+        eyebrow: 'GENTLE MANUAL TECHNIQUE',
+        title: 'About Bowen therapy',
+        intro: 'Bowen therapy is a gentle manual technique using precise, light movements over soft tissues, with short pauses between sequences. Sessions are calm and adapted to each person’s comfort.',
+        cards: [
+          {
+            icon: '≈',
+            title: 'What a session involves',
+            text: 'The practitioner performs gentle movements in selected areas, followed by short pauses. There are no forceful manipulations, and pressure is adapted individually. The client normally remains comfortably clothed throughout the session.',
+          },
+          {
+            icon: '◇',
+            title: 'Why people choose it',
+            text: 'Some people choose Bowen therapy as a complementary approach for relaxation, muscular tension, stiffness, musculoskeletal discomfort, or general wellbeing. Individual responses may vary.',
+          },
+          {
+            icon: '✦',
+            title: 'A complementary approach',
+            text: 'Available research remains limited, and Bowen therapy should not be presented as a curative treatment. Persistent pain, new symptoms, injuries, or diagnosed medical conditions should be assessed by a qualified healthcare professional.',
+          },
+        ],
+        highlight: 'Suitable for adults and children, depending on individual needs and the practitioner’s assessment.',
+        disclaimer: 'This information is general and does not replace medical consultation, diagnosis, or treatment.',
+        ctaPrompt: 'Questions about a session?',
+        ctaButton: 'Contact us',
       },
       massage: {
         title: 'Massage Services',
@@ -774,6 +826,33 @@ function DiplomaGallery({ documents, title, t, onPreview }) {
   )
 }
 
+function BowenInformation({ content }) {
+  return (
+    <section className="bowen-information glass-card" aria-labelledby="bowen-information-title">
+      <header className="bowen-information-heading">
+        <p className="eyebrow">{content.eyebrow}</p>
+        <h2 id="bowen-information-title">{content.title}</h2>
+        <p>{content.intro}</p>
+      </header>
+      <div className="bowen-information-grid">
+        {content.cards.map((card) => (
+          <article className="bowen-information-card" key={card.title}>
+            <span className="bowen-information-icon" aria-hidden="true">{card.icon}</span>
+            <h3>{card.title}</h3>
+            <p>{card.text}</p>
+          </article>
+        ))}
+      </div>
+      <p className="bowen-information-highlight"><span aria-hidden="true">✦</span>{content.highlight}</p>
+      <p className="bowen-medical-disclaimer">{content.disclaimer}</p>
+      <div className="bowen-information-cta">
+        <strong>{content.ctaPrompt}</strong>
+        <Link className="button secondary" to="/contact?interest=bowen">{content.ctaButton}</Link>
+      </div>
+    </section>
+  )
+}
+
 function TherapyPage({ t, language }) {
   const [preview, setPreview] = useState(null)
   const [servicePrices, setServicePrices] = useState(null)
@@ -854,6 +933,8 @@ function TherapyPage({ t, language }) {
             title={t.therapy.title}
             text={t.therapy.text}
           />
+
+          <BowenInformation content={t.therapy.aboutBowen} />
 
           <section className="pricing-group bowen-pricing" aria-label={t.therapy.pricingAria}>
             <header className="pricing-heading">
@@ -1183,6 +1264,9 @@ function AdminReviewCard({ review, labels, language, serviceLabel, activeAction,
 }
 
 function ContactPage({ t }) {
+  const location = useLocation()
+  const requestedInterest = new URLSearchParams(location.search).get('interest')
+  const defaultInterest = ['cazare', 'masaj', 'bowen', 'pachet'].includes(requestedInterest) ? requestedInterest : 'cazare'
   const mapUrl =
     'https://www.google.com/maps?q=Strada%20Ghioceilor%20nr.%206A%2C%20Slanic%2C%20Prahova%2C%20Romania'
   const directionsUrl =
@@ -1309,7 +1393,7 @@ function ContactPage({ t }) {
               </label>
               <label>
                 {t.contact.form.interest}
-                <select name="interest" defaultValue="cazare">
+                <select name="interest" defaultValue={defaultInterest}>
                   <option value="cazare">{t.contact.form.options.lodging}</option>
                   <option value="masaj">{t.contact.form.options.massage}</option>
                   <option value="bowen">{t.contact.form.options.bowen}</option>
