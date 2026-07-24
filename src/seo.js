@@ -6,52 +6,52 @@ export const SOCIAL_IMAGE = `${SITE_URL}/social-preview.jpg`
 export const SEO_ROUTES = {
   '/': {
     ro: {
-      title: 'Pensiunea Cris | Cazare și wellness în Slănic Prahova',
-      description: 'Pensiunea Cris oferă cazare boutique, Terapia Bowen și servicii de masaj într-un cadru relaxant din Slănic Prahova.',
+      title: 'Pensiunea Criss | Cazare și wellness în Slănic Prahova',
+      description: 'Pensiunea Criss oferă cazare boutique, Terapia Bowen și servicii de masaj într-un cadru relaxant din Slănic Prahova.',
     },
     en: {
-      title: 'Pensiunea Cris | Accommodation & Wellness in Slănic Prahova',
-      description: 'Discover boutique accommodation, Bowen Therapy and professional massage services at Pensiunea Cris in Slănic Prahova, Romania.',
+      title: 'Pensiunea Criss | Accommodation & Wellness in Slănic Prahova',
+      description: 'Discover boutique accommodation, Bowen Therapy and professional massage services at Pensiunea Criss in Slănic Prahova, Romania.',
     },
   },
   '/pensiunea': {
     ro: {
-      title: 'Cazare boutique în Slănic Prahova | Pensiunea Cris',
-      description: 'Descoperă Pensiunea Cris, un refugiu rustic premium pentru cazare, relaxare și weekenduri liniștite în Slănic Prahova.',
+      title: 'Cazare boutique în Slănic Prahova | Pensiunea Criss',
+      description: 'Descoperă Pensiunea Criss, un refugiu rustic premium pentru cazare, relaxare și weekenduri liniștite în Slănic Prahova.',
     },
     en: {
-      title: 'Boutique Accommodation in Slănic Prahova | Pensiunea Cris',
-      description: 'Discover Pensiunea Cris, a premium rustic retreat for accommodation, relaxation and peaceful weekends in Slănic Prahova.',
+      title: 'Boutique Accommodation in Slănic Prahova | Pensiunea Criss',
+      description: 'Discover Pensiunea Criss, a premium rustic retreat for accommodation, relaxation and peaceful weekends in Slănic Prahova.',
     },
   },
   '/therapy': {
     ro: {
-      title: 'Terapia Bowen și Masaj în Slănic Prahova | Pensiunea Cris',
+      title: 'Terapia Bowen și Masaj în Slănic Prahova | Pensiunea Criss',
       description: 'Vezi serviciile, prețurile și abonamentele pentru Terapia Bowen, masaj terapeutic, masaj de relaxare și reflexoterapie.',
     },
     en: {
-      title: 'Bowen Therapy & Massage in Slănic Prahova | Pensiunea Cris',
+      title: 'Bowen Therapy & Massage in Slănic Prahova | Pensiunea Criss',
       description: 'Explore services, prices and packages for Bowen Therapy, therapeutic massage, relaxation massage and reflexology.',
     },
   },
   '/recenzii': {
     ro: {
-      title: 'Recenzii Terapia Bowen și Masaj | Pensiunea Cris',
-      description: 'Citește experiențele clienților și recenziile verificate pentru Terapia Bowen și serviciile de masaj de la Pensiunea Cris.',
+      title: 'Recenzii Terapia Bowen și Masaj | Pensiunea Criss',
+      description: 'Citește experiențele clienților și recenziile verificate pentru Terapia Bowen și serviciile de masaj de la Pensiunea Criss.',
     },
     en: {
-      title: 'Bowen Therapy & Massage Reviews | Pensiunea Cris',
-      description: 'Read verified guest experiences and reviews for Bowen Therapy and professional massage services at Pensiunea Cris.',
+      title: 'Bowen Therapy & Massage Reviews | Pensiunea Criss',
+      description: 'Read verified guest experiences and reviews for Bowen Therapy and professional massage services at Pensiunea Criss.',
     },
   },
   '/contact': {
     ro: {
-      title: 'Contact și programări | Pensiunea Cris Slănic Prahova',
-      description: 'Contactează Pensiunea Cris pentru cazare, programări la Terapia Bowen sau masaj în Slănic Prahova. Telefon: 0743 486 611.',
+      title: 'Contact și programări | Pensiunea Criss Slănic Prahova',
+      description: 'Contactează Pensiunea Criss pentru cazare, programări la Terapia Bowen sau masaj în Slănic Prahova. Telefon: 0743 486 611.',
     },
     en: {
-      title: 'Contact & Appointments | Pensiunea Cris Slănic Prahova',
-      description: 'Contact Pensiunea Cris for accommodation, Bowen Therapy or massage appointments in Slănic Prahova. Phone: +40 743 486 611.',
+      title: 'Contact & Appointments | Pensiunea Criss Slănic Prahova',
+      description: 'Contact Pensiunea Criss for accommodation, Bowen Therapy or massage appointments in Slănic Prahova. Phone: +40 743 486 611.',
     },
   },
 }
@@ -75,7 +75,7 @@ export function structuredData(pathname, language) {
   const business = {
     '@type': 'LodgingBusiness',
     '@id': `${SITE_URL}/#business`,
-    name: 'Pensiunea Cris',
+    name: 'Pensiunea Criss',
     legalName: 'CRISSBT SRL',
     url: SITE_URL,
     image: SOCIAL_IMAGE,
@@ -100,7 +100,7 @@ export function structuredData(pathname, language) {
         '@type': 'WebSite',
         '@id': `${SITE_URL}/#website`,
         url: `${SITE_URL}/`,
-        name: 'Pensiunea Cris',
+        name: 'Pensiunea Criss',
         inLanguage: ['ro-RO', 'en-GB'],
         publisher: { '@id': `${SITE_URL}/#business` },
       },

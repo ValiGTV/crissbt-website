@@ -29,7 +29,7 @@ export default function SeoMetadata({ language }) {
     const canonical = canonicalUrl(pathname)
     const locale = language === 'ro' ? 'ro_RO' : 'en_GB'
 
-    document.title = isAdmin ? 'Review moderation | Pensiunea Cris' : seo.title
+    document.title = isAdmin ? 'Review moderation | Pensiunea Criss' : seo.title
     upsertMeta('meta[name="description"]', { name: 'description', content: seo.description })
     upsertMeta('meta[name="robots"]', { name: 'robots', content: isAdmin ? 'noindex, nofollow, noarchive' : 'index, follow, max-image-preview:large' })
     upsertMeta('meta[property="og:title"]', { property: 'og:title', content: seo.title })
@@ -37,9 +37,9 @@ export default function SeoMetadata({ language }) {
     upsertMeta('meta[property="og:type"]', { property: 'og:type', content: 'website' })
     upsertMeta('meta[property="og:url"]', { property: 'og:url', content: canonical })
     upsertMeta('meta[property="og:image"]', { property: 'og:image', content: SOCIAL_IMAGE })
-    upsertMeta('meta[property="og:image:alt"]', { property: 'og:image:alt', content: 'Pensiunea Cris, Slănic Prahova' })
+    upsertMeta('meta[property="og:image:alt"]', { property: 'og:image:alt', content: 'Pensiunea Criss, Slănic Prahova' })
     upsertMeta('meta[property="og:locale"]', { property: 'og:locale', content: locale })
-    upsertMeta('meta[property="og:site_name"]', { property: 'og:site_name', content: 'Pensiunea Cris' })
+    upsertMeta('meta[property="og:site_name"]', { property: 'og:site_name', content: 'Pensiunea Criss' })
     upsertMeta('meta[name="twitter:card"]', { name: 'twitter:card', content: 'summary_large_image' })
     upsertMeta('meta[name="twitter:title"]', { name: 'twitter:title', content: seo.title })
     upsertMeta('meta[name="twitter:description"]', { name: 'twitter:description', content: seo.description })

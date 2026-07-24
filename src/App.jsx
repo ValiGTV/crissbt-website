@@ -23,10 +23,10 @@ const SOUND_STORAGE_KEY = 'pensiunea-cris-sound'
 const translations = {
   ro: {
     navAria: 'Navigatie principala',
-    brandAria: 'Pensiunea Cris acasa',
+    brandAria: 'Pensiunea Criss acasa',
     nav: [
       { label: 'Acasă', to: '/' },
-      { label: 'Pensiunea Cris', to: '/pensiunea' },
+      { label: 'Pensiunea Criss', to: '/pensiunea' },
       { label: 'Terapia Bowen & Masaj', to: '/therapy' },
       { label: 'Recenzii', to: '/recenzii' },
       { label: 'Contact', to: '/contact' },
@@ -65,7 +65,7 @@ const translations = {
     },
     pension: {
       eyebrow: 'Cazare rustica eleganta',
-      title: 'Pensiunea Cris',
+      title: 'Pensiunea Criss',
       text: 'O pensiune cu aer cald, materiale naturale si o atmosfera potrivita pentru weekenduri linistite, tratamente wellness si timp petrecut fara graba.',
       cards: [
         {
@@ -148,7 +148,7 @@ const translations = {
     reviews: {
       eyebrow: 'Experiențe wellness',
       title: 'Recenzii',
-      text: 'Impresii despre Terapia Bowen și serviciile de masaj oferite la Pensiunea Cris.',
+      text: 'Impresii despre Terapia Bowen și serviciile de masaj oferite la Pensiunea Criss.',
       ratingAria: 'Rating 5 din 5',
       all: 'Toate',
       services: { bowen: 'Terapia Bowen', facial_massage: 'Masaj facial', relaxation_massage: 'Masaj de relaxare', therapeutic_massage: 'Masaj terapeutic', reflexology: 'Reflexoterapie' },
@@ -187,7 +187,7 @@ const translations = {
       },
       directions: {
         title: 'Cum ajungeți la noi',
-        address: ['Pensiunea Cris', 'Strada Ghioceilor nr. 6A', 'Slănic, Prahova, România'],
+        address: ['Pensiunea Criss', 'Strada Ghioceilor nr. 6A', 'Slănic, Prahova, România'],
         details: [
           'Aproape de principalele atracții din Slănic Prahova',
           'Parcare disponibilă pentru oaspeți',
@@ -215,22 +215,22 @@ const translations = {
       },
     },
     footer: {
-      location: 'Pensiunea Cris • Slanic Prahova',
+      location: 'Pensiunea Criss • Slanic Prahova',
       company: 'CRISSBT SRL • 0743486611',
     },
     quickContact: {
       whatsappLabel: 'Scrie-ne pe WhatsApp',
       whatsappMessage:
-        'Bună ziua! Doresc mai multe informații despre Pensiunea Cris și serviciile disponibile.',
+        'Bună ziua! Doresc mai multe informații despre Pensiunea Criss și serviciile disponibile.',
       callLabel: 'Sună acum',
     },
   },
   en: {
     navAria: 'Main navigation',
-    brandAria: 'Pensiunea Cris home',
+    brandAria: 'Pensiunea Criss home',
     nav: [
       { label: 'Home', to: '/' },
-      { label: 'Pensiunea Cris', to: '/pensiunea' },
+      { label: 'Pensiunea Criss', to: '/pensiunea' },
       { label: 'Bowen Therapy & Massage', to: '/therapy' },
       { label: 'Reviews', to: '/recenzii' },
       { label: 'Contact', to: '/contact' },
@@ -269,7 +269,7 @@ const translations = {
     },
     pension: {
       eyebrow: 'Elegant rustic accommodation',
-      title: 'Pensiunea Cris',
+      title: 'Pensiunea Criss',
       text: 'A welcoming guesthouse with natural materials and an atmosphere made for quiet weekends, wellness treatments and unhurried time.',
       cards: [
         {
@@ -352,7 +352,7 @@ const translations = {
     reviews: {
       eyebrow: 'Wellness experiences',
       title: 'Reviews',
-      text: 'Experiences with Bowen Therapy and massage services offered at Pensiunea Cris.',
+      text: 'Experiences with Bowen Therapy and massage services offered at Pensiunea Criss.',
       ratingAria: 'Rating 5 out of 5',
       all: 'All',
       services: { bowen: 'Bowen Therapy', facial_massage: 'Facial Massage', relaxation_massage: 'Relaxation Massage', therapeutic_massage: 'Therapeutic Massage', reflexology: 'Reflexology' },
@@ -391,7 +391,7 @@ const translations = {
       },
       directions: {
         title: 'How to reach us',
-        address: ['Pensiunea Cris', '6A Ghioceilor Street', 'Slănic, Prahova, Romania'],
+        address: ['Pensiunea Criss', '6A Ghioceilor Street', 'Slănic, Prahova, Romania'],
         details: [
           'Close to the main attractions in Slănic Prahova',
           'Guest parking available',
@@ -419,13 +419,13 @@ const translations = {
       },
     },
     footer: {
-      location: 'Pensiunea Cris • Slanic Prahova',
+      location: 'Pensiunea Criss • Slanic Prahova',
       company: 'CRISSBT SRL • 0743486611',
     },
     quickContact: {
       whatsappLabel: 'Message us on WhatsApp',
       whatsappMessage:
-        'Hello! I would like more information about Pensiunea Cris and the available services.',
+        'Hello! I would like more information about Pensiunea Criss and the available services.',
       callLabel: 'Call now',
     },
   },
@@ -448,7 +448,7 @@ function Navbar({ currentLanguage, onLanguageChange, t }) {
     <header className="navbar">
       <Link className="brand" to="/" aria-label={t.brandAria}>
         <span className="brand-mark">PC</span>
-        <span>Pensiunea Cris</span>
+        <span>Pensiunea Criss</span>
       </Link>
       <nav aria-label={t.navAria}>
         {t.nav.map((item) => (
@@ -613,7 +613,7 @@ function HomePage({ t }) {
           <div className="hero-content">
             <p className="eyebrow">{t.home.eyebrow}</p>
             <h1>
-              Pensiunea<wbr /> Cris
+              Pensiunea<wbr /> Criss
             </h1>
             <p className="hero-subtitle">{t.home.subtitle}</p>
             <div className="hero-actions" aria-label={t.home.actionsAria}>
@@ -740,7 +740,7 @@ function DiplomaVisual({ document, alt, loadingLabel, enlarged = false }) {
         {Array.from({ length: 12 }, (_, index) => (
           <span key={index}>
             <b>CRISSBT SRL</b>
-            <small>Pensiunea Cris • Cristina Pascu</small>
+            <small>Pensiunea Criss • Cristina Pascu</small>
           </span>
         ))}
       </div>

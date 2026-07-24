@@ -22,7 +22,7 @@ function routeHead(pathname, language = 'ro') {
     <link rel="alternate" hreflang="en" href="${localizedUrl(pathname, 'en')}" />
     <link rel="alternate" hreflang="x-default" href="${canonical}" />
     <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="Pensiunea Cris" />
+    <meta property="og:site_name" content="Pensiunea Criss" />
     <meta property="og:locale" content="ro_RO" />
     <meta property="og:title" content="${escapeAttribute(seo.title)}" />
     <meta property="og:description" content="${escapeAttribute(seo.description)}" />
@@ -30,7 +30,7 @@ function routeHead(pathname, language = 'ro') {
     <meta property="og:image" content="${SOCIAL_IMAGE}" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="675" />
-    <meta property="og:image:alt" content="Pensiunea Cris, Slănic Prahova" />
+    <meta property="og:image:alt" content="Pensiunea Criss, Slănic Prahova" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="${escapeAttribute(seo.title)}" />
     <meta name="twitter:description" content="${escapeAttribute(seo.description)}" />
@@ -56,9 +56,9 @@ for (const pathname of Object.keys(SEO_ROUTES).filter((route) => route !== '/'))
 
 const adminDirectory = join(dist, 'admin', 'reviews')
 await mkdir(adminDirectory, { recursive: true })
-const adminHead = '<title>Review moderation | Pensiunea Cris</title><meta name="robots" content="noindex, nofollow, noarchive" />'
+const adminHead = '<title>Review moderation | Pensiunea Criss</title><meta name="robots" content="noindex, nofollow, noarchive" />'
 await writeFile(join(adminDirectory, 'index.html'), replaceSeoHead(template, adminHead), 'utf8')
 
 const pricesAdminDirectory = join(dist, 'admin', 'prices')
 await mkdir(pricesAdminDirectory, { recursive: true })
-await writeFile(join(pricesAdminDirectory, 'index.html'), replaceSeoHead(template, '<title>Price management | Pensiunea Cris</title><meta name="robots" content="noindex, nofollow, noarchive" />'), 'utf8')
+await writeFile(join(pricesAdminDirectory, 'index.html'), replaceSeoHead(template, '<title>Price management | Pensiunea Criss</title><meta name="robots" content="noindex, nofollow, noarchive" />'), 'utf8')
