@@ -112,17 +112,32 @@ const translations = {
           {
             icon: '≈',
             title: 'Cum se desfășoară',
-            text: 'Terapeutul aplică mișcări ușoare în zone atent selectate, urmate de scurte pauze. Nu presupune manipulări bruște, iar presiunea este adaptată individual. Persoana rămâne îmbrăcată lejer pe durata ședinței.',
+            text: 'Terapeutul aplică mișcări ușoare în zone atent selectate, urmate de scurte pauze. Nu presupune manipulări bruște, iar presiunea este adaptată individual. Persoana poate rămâne îmbrăcată lejer pe durata ședinței.',
           },
           {
             icon: '◇',
             title: 'Pentru ce este aleasă',
-            text: 'Unele persoane aleg terapia Bowen ca abordare complementară pentru relaxare, tensiune musculară, rigiditate, disconfort musculoscheletal sau pentru susținerea stării generale de bine. Rezultatele pot varia de la o persoană la alta.',
+            text: 'Unele persoane aleg terapia Bowen pentru relaxare, reducerea tensiunii musculare, rigiditate, disconfort musculoscheletal sau pentru susținerea stării generale de bine. Răspunsul diferă de la o persoană la alta.',
+          },
+          {
+            icon: '◌',
+            title: 'Mișcări blânde, fără forță',
+            text: 'Tehnica utilizează mișcări delicate aplicate asupra mușchilor, tendoanelor și fasciei. Nu implică manipularea forțată a articulațiilor sau oaselor și nu este un masaj profund.',
+          },
+          {
+            icon: 'Ⅱ',
+            title: 'Rolul pauzelor',
+            text: 'Între secvențele de mișcări sunt introduse pauze scurte. Aceste momente fac parte din modul specific de aplicare al tehnicii și oferă persoanei timp pentru relaxare și acomodare.',
           },
           {
             icon: '✦',
-            title: 'O abordare complementară',
-            text: 'Cercetările disponibile sunt încă limitate, iar terapia Bowen nu trebuie prezentată ca tratament curativ. Pentru durere persistentă, simptome noi, traumatisme sau afecțiuni diagnosticate este recomandată evaluarea unui medic sau a unui profesionist medical calificat.',
+            title: 'Adaptată fiecărei persoane',
+            text: 'Ședința este adaptată vârstei, confortului și nevoilor individuale. Tehnica poate fi aplicată adulților și copiilor, după evaluarea terapeutului și cu ajustările potrivite fiecărei situații.',
+          },
+          {
+            icon: '↔',
+            title: 'Între ședințe',
+            text: 'Bowtech recomandă evitarea altor terapii corporale pentru câteva zile înainte și după o ședință Bowen, astfel încât experiența și răspunsul individual la tehnică să poată fi observate mai clar.',
           },
         ],
         highlight: 'Potrivită pentru adulți și copii, în funcție de nevoile individuale și după evaluarea terapeutului.',
@@ -342,7 +357,7 @@ const translations = {
           {
             icon: '≈',
             title: 'What a session involves',
-            text: 'The practitioner performs gentle movements in selected areas, followed by short pauses. There are no forceful manipulations, and pressure is adapted individually. The client normally remains comfortably clothed throughout the session.',
+            text: 'The practitioner performs gentle movements in carefully selected areas, followed by short pauses. There are no forceful manipulations, and pressure is adapted individually. The client may remain comfortably clothed throughout the session.',
           },
           {
             icon: '◇',
@@ -350,9 +365,24 @@ const translations = {
             text: 'Some people choose Bowen therapy as a complementary approach for relaxation, muscular tension, stiffness, musculoskeletal discomfort, or general wellbeing. Individual responses may vary.',
           },
           {
+            icon: '◌',
+            title: 'Gentle, non-forceful movements',
+            text: 'The technique uses delicate movements over muscles, tendons, and fascia. It does not involve forceful manipulation of joints or bones and is not a form of deep-tissue massage.',
+          },
+          {
+            icon: 'Ⅱ',
+            title: 'The role of pauses',
+            text: 'Short pauses are introduced between sequences of movements. These intervals are part of the technique’s application and give the client time to relax and settle.',
+          },
+          {
             icon: '✦',
-            title: 'A complementary approach',
-            text: 'Available research remains limited, and Bowen therapy should not be presented as a curative treatment. Persistent pain, new symptoms, injuries, or diagnosed medical conditions should be assessed by a qualified healthcare professional.',
+            title: 'Adapted to each person',
+            text: 'Sessions are adapted to the person’s age, comfort, and individual needs. The technique may be used with adults and children following the practitioner’s assessment and appropriate adjustments.',
+          },
+          {
+            icon: '↔',
+            title: 'Between sessions',
+            text: 'Bowtech recommends avoiding other bodywork therapies for several days before and after a Bowen session, allowing the individual response to the technique to be observed more clearly.',
           },
         ],
         highlight: 'Suitable for adults and children, depending on individual needs and the practitioner’s assessment.',

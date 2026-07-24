@@ -1508,11 +1508,6 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .bowen-information-card:last-child {
-    grid-column: 1 / -1;
-    width: calc(50% - 7px);
-    justify-self: center;
-  }
 }
 
 @media (max-width: 620px) {
@@ -1525,10 +1520,7 @@
     grid-template-columns: 1fr;
   }
 
-  .bowen-information-card,
-  .bowen-information-card:last-child {
-    grid-column: auto;
-    width: auto;
+  .bowen-information-card {
     min-height: 0;
   }
 

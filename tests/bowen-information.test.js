@@ -22,19 +22,34 @@ test('Romanian and English Bowen information content is available', () => {
     'Despre terapia Bowen',
     'Cum se desfășoară',
     'Pentru ce este aleasă',
-    'O abordare complementară',
+    'Mișcări blânde, fără forță',
+    'Rolul pauzelor',
+    'Adaptată fiecărei persoane',
+    'Între ședințe',
     'GENTLE MANUAL TECHNIQUE',
     'About Bowen therapy',
     'What a session involves',
     'Why people choose it',
-    'A complementary approach',
+    'Gentle, non-forceful movements',
+    'The role of pauses',
+    'Adapted to each person',
+    'Between sessions',
   ]) assert.match(app, new RegExp(text))
 })
 
-test('medical disclaimers and evidence-aware limitations are explicit', () => {
-  assert.match(app, /Cercetările disponibile sunt încă limitate/)
+test('exactly six informational cards are configured in each language', () => {
+  const sections = [...app.matchAll(/aboutBowen: \{[\s\S]*?cards: \[([\s\S]*?)\],\n\s+highlight:/g)]
+  assert.equal(sections.length, 2)
+  for (const section of sections) assert.equal((section[1].match(/title: '/g) || []).length, 6)
+})
+
+test('the former complementary-approach card is removed', () => {
+  assert.doesNotMatch(app, /O abordare complementară/)
+  assert.doesNotMatch(app, /A complementary approach/)
+})
+
+test('medical disclaimers remain explicit', () => {
   assert.match(app, /nu înlocuiește consultația medicală, diagnosticul sau tratamentul recomandat de medic/)
-  assert.match(app, /Available research remains limited/)
   assert.match(app, /does not replace medical consultation, diagnosis, or treatment/)
 })
 
@@ -47,9 +62,12 @@ test('Bowen information makes no prohibited cure or guarantee claim', () => {
     /tratează cauza/i,
     /garantează/i,
     /stimulează autovindecarea/i,
+    /vindecă afecțiuni/i,
     /cures? diseases?/i,
+    /heals? diagnosed conditions?/i,
     /treats? the root cause/i,
     /guarantees? pain relief/i,
+    /guarantees? improvement/i,
     /stimulates? self-healing/i,
   ]) assert.doesNotMatch(content, prohibited)
 })
@@ -63,6 +81,5 @@ test('CTA links to Contact and safely preselects Bowen interest', () => {
 test('responsive Bowen information layouts are present', () => {
   assert.match(css, /\.bowen-information-grid[\s\S]*?grid-template-columns: repeat\(3, minmax\(0, 1fr\)\)/)
   assert.match(css, /@media \(max-width: 1100px\)[\s\S]*?\.bowen-information-grid[\s\S]*?repeat\(2, minmax\(0, 1fr\)\)/)
-  assert.match(css, /\.bowen-information-card:last-child[\s\S]*?justify-self: center/)
   assert.match(css, /@media \(max-width: 620px\)[\s\S]*?\.bowen-information-grid[\s\S]*?grid-template-columns: 1fr/)
 })
